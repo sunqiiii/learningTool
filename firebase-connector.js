@@ -1,5 +1,8 @@
 initializeFirebase();
 
+firebase.database().ref();  // Specifies the database root
+firebase.database().ref("child/path") // Specifies a specific location in the database tree
+
 let myFlashcard = [
   {
     "question": "Name this species of bird.",
@@ -18,7 +21,13 @@ let myFlashcard = [
   }
 ];
 
-const db = getDatabase();
-const dbLocation = {};
-dbLocation['/deck/flashcards/'] = myFlashcards;
-update (ref(db), dbLocation);
+
+// Make the database point to the location root -> deck -> flashcards
+// If the location doesn't exist is will be created
+// Create the reference location
+let dbLocation = firebase.database().ref('deck/flashcards'); 
+ 
+// myFlashcards will be stored under flashcards in the database
+// Anything that was in this location will be overwritten
+// Thus, a write operation also does an update
+dbLocation.set(myFlashcards);
